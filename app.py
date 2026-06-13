@@ -119,6 +119,11 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+st.image(
+    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
+    use_container_width=True
+)
+
 menu = ["Login", "Register"]
 
 if not st.session_state.logged_in:
