@@ -109,7 +109,16 @@ if "email" not in st.session_state:
 
 # ---------------- UI ---------------- #
 
-st.title("📚 Study Buddy Matcher")
+ st.markdown("""
+<div style='text-align:center; padding:30px 0;'>
+    <h1 style='color:#6366F1;'>📚 Study Buddy Matcher</h1>
+    <h3>Find Your Perfect Study Partner</h3>
+    <p style='font-size:18px; color:gray;'>
+        Connect with students studying the same subjects,
+        preparing for the same exams, and available at the same time.
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
 menu = ["Login", "Register"]
 
