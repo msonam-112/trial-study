@@ -196,20 +196,21 @@ if not st.session_state.logged_in:
 
                 login_btn = st.button(
                 "Login",
-                use_container_width=True)
+                use_container_width=True
+                )
         
 
                 if login_btn:
 
                  user = login_user(email, password)
 
-        if user:
-            st.session_state.logged_in = True
-            st.session_state.email = email
-            st.rerun()
+                 if user:
+                        st.session_state.logged_in = True
+                        st.session_state.email = email
+                        st.rerun()
 
-        else:
-            st.error("Invalid Credentials")
+                else:
+                        st.error("Invalid Credentials")
 
 # DASHBOARD
 
