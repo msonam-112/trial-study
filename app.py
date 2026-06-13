@@ -185,23 +185,23 @@ if not st.session_state.logged_in:
 
          with center:
 
-          st.subheader("Login")
+                st.subheader("Login")
 
-         email = st.text_input("Email")
+                email = st.text_input("Email")
 
-         password = st.text_input(
-          "Password",
-         type="password"
-    )
+                password = st.text_input(
+                "Password",
+                type="password")
+        
 
-         login_btn = st.button(
-          "Login",
-         use_container_width=True
-    )
+                login_btn = st.button(
+                "Login",
+                use_container_width=True)
+        
 
-    if login_btn:
+                if login_btn:
 
-        user = login_user(email, password)
+                 user = login_user(email, password)
 
         if user:
             st.session_state.logged_in = True
