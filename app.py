@@ -181,22 +181,35 @@ if not st.session_state.logged_in:
 
     elif choice == "Login":
 
-        st.subheader("Login")
+         left, center, right = st.columns([1, 2, 1])
 
-        email = st.text_input("Email")
-        password = st.text_input("Password", type="password")
+         with center:
 
-        if st.button("Login"):
+         st.subheader("Login")
 
-            user = login_user(email, password)
+         email = st.text_input("Email")
 
-            if user:
-                st.session_state.logged_in = True
-                st.session_state.email = email
-                st.rerun()
+         password = st.text_input(
+          "Password",
+         type="password"
+    )
 
-            else:
-                st.error("Invalid Credentials")
+         login_btn = st.button(
+          "Login",
+         use_container_width=True
+    )
+
+    if login_btn:
+
+        user = login_user(email, password)
+
+        if user:
+            st.session_state.logged_in = True
+            st.session_state.email = email
+            st.rerun()
+
+        else:
+            st.error("Invalid Credentials")
 
 # DASHBOARD
 
