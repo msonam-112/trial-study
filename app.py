@@ -108,8 +108,7 @@ if "email" not in st.session_state:
     st.session_state.email = ""
 
 # ---------------- UI ---------------- #
-
- st.markdown("""
+st.markdown("""
 <div style='text-align:center; padding:30px 0;'>
     <h1 style='color:#6366F1;'>📚 Study Buddy Matcher</h1>
     <h3>Find Your Perfect Study Partner</h3>
