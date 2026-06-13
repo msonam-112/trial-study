@@ -2,6 +2,31 @@ import streamlit as st
 import sqlite3
 import pandas as pd
 
+# CUSTOM CSS
+st.markdown("""
+<style>
+.stButton > button {
+    background-color: #4F46E5;
+    color: white;
+    border-radius: 10px;
+    border: none;
+}
+
+.stButton > button:hover {
+    background-color: #4338CA;
+}
+
+.stSuccess {
+    border-radius: 10px;
+}
+
+.stTextInput > div > div > input {
+    border-radius: 10px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# rest of your code starts here
 # ---------------- DATABASE ---------------- #
 
 conn = sqlite3.connect("studybuddy.db", check_same_thread=False)
@@ -233,7 +258,27 @@ else:
         if matches.empty:
             st.info("No matches found.")
         else:
-            st.dataframe(matches)
+             for _, row in matches.iterrows():
+
+              score_percent = min(row["Match Score"] * 50, 100)
+
+              st.markdown(f"""
+              ### 👤 {row['Name']}
+
+              📚 Subject: {row['Subject']}
+
+              📝 Exam: {row['Exam']}
+
+              ⏰ Study Time: {row['Study Time']}
+
+              💻 Mode: {row['Mode']}
+
+              ⭐ Match Score: {score_percent:.0f}%
+    """)
+
+              st.progress(score_percent / 100)
+
+              st.divider()
 
     with tab2:
 
