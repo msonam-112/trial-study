@@ -283,9 +283,10 @@ else:
     with tab2:
 
         st.subheader("Registered Students")
-
         df = get_all_users()
 
+        st.metric("Total Students", len(df))
+         
         st.dataframe(
             df[
                 [
