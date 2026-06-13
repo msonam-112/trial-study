@@ -285,9 +285,14 @@ else:
         st.subheader("Registered Students")
         df = get_all_users()
 
-        st.metric("Total Students", len(df))
+        search = st.text_input("🔍 Search by Subject")
+
+    if search:
+        df = df[df["subject"].str.contains(search, case=False)]
+
+    st.metric("Total Students", len(df))
          
-        st.dataframe(
+    st.dataframe(
             df[
                 [
                     "name",
