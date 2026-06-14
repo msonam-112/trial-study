@@ -46,7 +46,16 @@ CREATE TABLE IF NOT EXISTS users(
 """)
 
 conn.commit()
+c.execute("""
+CREATE TABLE IF NOT EXISTS requests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender_email TEXT,
+    receiver_email TEXT,
+    status TEXT DEFAULT 'Pending'
+)
+""")
 
+conn.commit()
 # ---------------- FUNCTIONS ---------------- #
 
 def register_user(name, email, password, subject, exam, study_time, mode):
@@ -74,6 +83,31 @@ def login_user(email, password):
 def get_all_users():
     return pd.read_sql_query("SELECT * FROM users", conn)
 
+def get_user_email(name):
+    c.execute(
+        "SELECT email FROM users WHERE name = ?",
+        (name,)
+    )
+    result = c.fetchone()
+
+    if result:
+        return result[0]
+    return None
+
+def get_user_email(name):
+    ...
+    return None
+
+def update_request_status(sender_email, receiver_email, status):
+    c.execute(
+        """
+        UPDATE requests
+        SET status = ?
+        WHERE sender_email = ? AND receiver_email = ?
+        """,
+        (status, sender_email, receiver_email)
+    )
+    conn.commit()
 
 def calculate_match(user, candidate):
     score = 0
@@ -243,8 +277,8 @@ else:
 
     st.success(f"Logged in as {st.session_state.email}")
 
-    tab1, tab2 = st.tabs(
-        ["Find Study Buddies", "Student Directory"]
+    tab1, tab2, tab3 = st.tabs(
+        ["Find Study Buddies", "Student Directory","Requests"]
     )
 
     with tab1:
@@ -278,7 +312,28 @@ else:
 
               st.progress(score_percent / 100)
 
-              st.divider()
+             if st.button(
+              f"🤝 Connect with {row['Name']}",
+             key=f"connect_{row['Name']}"
+             ):
+
+                 receiver_email = get_user_email(row["Name"])
+
+                 c.execute("""
+                 INSERT INTO requests
+                 (sender_email, receiver_email)
+                 VALUES (?, ?)
+                 """,
+                 (
+                 st.session_state.email,
+                 receiver_email
+                 ))
+
+                 conn.commit()
+
+                 st.success("Connection request sent!")
+
+    st.divider()
 
     with tab2:
 
@@ -309,8 +364,54 @@ else:
                 ]
             ]
         )
+    with tab3:
+        st.subheader("Connection Requests")
+        c.execute(
+            """
+            SELECT sender_email
+            FROM requests
+            WHERE receiver_email = ?
+            """,
+            (st.session_state.email,)
+        )
 
-    if st.button("Logout"):
-        st.session_state.logged_in = False
-        st.session_state.email = ""
-        st.rerun()
+        requests = c.fetchall()
+    
+
+    if requests:
+     for req in requests:
+
+        st.info(f"📩 Request from: {req[0]}")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            if st.button(
+                f"✅ Accept {req[0]}",
+                key=f"accept_{req[0]}"
+            ):
+                update_request_status(
+                    req[0],
+                    st.session_state.email,
+                    "Accepted"
+                )
+                st.success("Request accepted!")
+
+        with col2:
+            if st.button(
+                f"❌ Reject {req[0]}",
+                key=f"reject_{req[0]}"
+            ):
+                update_request_status(
+                    req[0],
+                    st.session_state.email,
+                    "Rejected"
+                )
+                st.warning("Request rejected!")
+    else:
+     st.write("No requests yet.")
+
+if st.button("Logout"):
+          st.session_state.logged_in = False
+          st.session_state.email = ""
+          st.rerun()
