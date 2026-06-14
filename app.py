@@ -244,7 +244,7 @@ else:
     st.success(f"Logged in as {st.session_state.email}")
 
     tab1, tab2 = st.tabs(
-        ["Find Study Buddies", "All Students"]
+        ["Find Study Buddies", "Student Directory"]
     )
 
     with tab1:
@@ -259,10 +259,10 @@ else:
             st.info("No matches found.")
         else:
              for _, row in matches.iterrows():
+              with st.container(border=True):
+               score_percent = min(row["Match Score"] * 50, 100)
 
-              score_percent = min(row["Match Score"] * 50, 100)
-
-              st.markdown(f"""
+               st.markdown(f"""
               ### 👤 {row['Name']}
 
               📚 Subject: {row['Subject']}
@@ -290,7 +290,13 @@ else:
     if search:
         df = df[df["subject"].str.contains(search, case=False)]
 
-    st.metric("Total Students", len(df))
+        col1, col2 = st.columns(2)
+
+        with col1:
+         st.metric("Total Students", len(df))
+
+        with col2:
+         st.metric("Subjects", df["subject"].nunique())
          
     st.dataframe(
             df[
