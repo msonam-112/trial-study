@@ -379,7 +379,7 @@ else:
     
 
     if requests:
-     for req in requests:
+     for i, req in enumerate(requests):
 
         st.info(f"📩 Request from: {req[0]}")
 
@@ -388,7 +388,7 @@ else:
         with col1:
             if st.button(
                 f"✅ Accept {req[0]}",
-                key=f"accept_{req[0]}"
+                key=f"accept_{i}"
             ):
                 update_request_status(
                     req[0],
@@ -400,7 +400,7 @@ else:
         with col2:
             if st.button(
                 f"❌ Reject {req[0]}",
-                key=f"reject_{req[0]}"
+                key=f"reject_{i}"
             ):
                 update_request_status(
                     req[0],
