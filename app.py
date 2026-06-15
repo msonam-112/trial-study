@@ -302,6 +302,8 @@ else:
         if matches.empty:
             st.info("No matches found.")
         else:
+             st.write(matches)
+
              for _, row in matches.iterrows():
               with st.container(border=True):
                score_percent = min(row["Match Score"] * 50, 100)
@@ -313,16 +315,20 @@ else:
                st.write(f"💻 Mode: {row['Mode']}")
                st.write(f"⭐ Match Score: {score_percent:.0f}%")
 
+            
+    
+
               st.progress(score_percent / 100)
-              st.write("DEBUG:", row["Name"])
-             if st.button(
+              if st.button(
               f"🤝 Connect with {row['Name']}",
              key=f"connect_{row['Name']}"
              ):
+               
+               
 
-                 receiver_email = get_user_email(row["Name"])
+               receiver_email = get_user_email(row["Name"])
 
-                 c.execute("""
+               c.execute("""
                  INSERT INTO requests
                  (sender_email, receiver_email)
                  VALUES (?, ?)
@@ -332,9 +338,9 @@ else:
                  receiver_email
                  ))
 
-                 conn.commit()
+             conn.commit()
 
-                 st.success("Connection request sent!")
+             st.success("Connection request sent!")
 
     st.divider()
 
