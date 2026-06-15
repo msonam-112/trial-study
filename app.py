@@ -421,7 +421,7 @@ else:
                     "Accepted"
                 )
                 st.success("Request accepted!")
-
+                st.rerun()
                 sender_details = get_user_details(req[0])
 
                 if sender_details:
