@@ -321,7 +321,7 @@ else:
     """)
 
               st.progress(score_percent / 100)
-
+              st.write("DEBUG:", row["Name"])
              if st.button(
               f"🤝 Connect with {row['Name']}",
              key=f"connect_{row['Name']}"
