@@ -324,23 +324,40 @@ else:
              key=f"connect_{row['Name']}"
              ):
                
-               
 
                receiver_email = get_user_email(row["Name"])
 
                c.execute("""
-                 INSERT INTO requests
-                 (sender_email, receiver_email)
-                 VALUES (?, ?)
-                 """,
-                 (
-                 st.session_state.email,
-                 receiver_email
-                 ))
+               SELECT *
+FROM requests
+WHERE sender_email = ?
+AND receiver_email = ?
+AND status = 'Pending'
+""",
+(
+    st.session_state.email,
+    receiver_email
+))
 
-             conn.commit()
+existing = c.fetchone()
 
-             st.success("Connection request sent!")
+if existing:
+    st.warning("Request already sent!")  
+else:
+    c.execute("""
+    INSERT INTO requests
+    (sender_email, receiver_email)
+    VALUES (?, ?)
+    """,
+    (
+        st.session_state.email,
+        receiver_email
+    ))        
+                 
+
+    conn.commit()
+
+    st.success("Connection request sent!")
 
     st.divider()
 
@@ -409,11 +426,11 @@ else:
 
                 sender_details = get_user_details(req[0])
 
-            if sender_details:
-                st.write("### Contact Details")
-                st.write(f"👤 Name: {sender_details[0]}")
-                st.write(f"📧 Email: {sender_details[1]}")
-                st.write(f"📱 Phone: {sender_details[2]}")
+                if sender_details:
+                    st.write("### Contact Details")
+                    st.write(f"👤 Name: {sender_details[0]}")
+                    st.write(f"📧 Email: {sender_details[1]}")
+                    st.write(f"📱 Phone: {sender_details[2]}")
 
         with col2:
             if st.button(
