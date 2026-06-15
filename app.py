@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS users(
     subject TEXT,
     exam TEXT,
     study_time TEXT,
+    phone TEXT,
     mode TEXT
 )
 """)
@@ -58,14 +59,14 @@ CREATE TABLE IF NOT EXISTS requests (
 conn.commit()
 # ---------------- FUNCTIONS ---------------- #
 
-def register_user(name, email, password, subject, exam, study_time, mode):
+def register_user(name, email, password, subject, exam, study_time, phone, mode):
     try:
         c.execute("""
         INSERT INTO users
-        (name,email,password,subject,exam,study_time,mode)
+        (name,email,password,subject,exam,study_time,phone,mode)
         VALUES (?,?,?,?,?,?,?)
         """,
-        (name,email,password,subject,exam,study_time,mode))
+        (name,email,password,subject,exam,study_time,phone,mode))
         conn.commit()
         return True
     except:
@@ -94,9 +95,16 @@ def get_user_email(name):
         return result[0]
     return None
 
-def get_user_email(name):
-    ...
-    return None
+def get_user_details(email):
+    c.execute(
+        """
+        SELECT name, email, phone
+        FROM users
+        WHERE email = ?
+        """,
+        (email,)
+    )
+    return c.fetchone()
 
 def update_request_status(sender_email, receiver_email, status):
     c.execute(
@@ -213,6 +221,7 @@ if not st.session_state.logged_in:
             "Preferred Study Time",
             ["Morning", "Afternoon", "Evening", "Night"]
         )
+        phone = st.text_input("Phone Number")
 
         mode = st.selectbox(
             "Study Mode",
@@ -228,6 +237,7 @@ if not st.session_state.logged_in:
                 subject,
                 exam,
                 study_time,
+                phone,
                 mode
             )
 
@@ -371,6 +381,7 @@ else:
             SELECT sender_email
             FROM requests
             WHERE receiver_email = ?
+            AND status = 'Pending'
             """,
             (st.session_state.email,)
         )
@@ -396,6 +407,14 @@ else:
                     "Accepted"
                 )
                 st.success("Request accepted!")
+
+                sender_details = get_user_details(req[0])
+
+            if sender_details:
+                st.write("### Contact Details")
+                st.write(f"👤 Name: {sender_details[0]}")
+                st.write(f"📧 Email: {sender_details[1]}")
+                st.write(f"📱 Phone: {sender_details[2]}")
 
         with col2:
             if st.button(
