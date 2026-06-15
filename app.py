@@ -324,39 +324,38 @@ else:
              key=f"connect_{row['Name']}"
              ):
                
-
                receiver_email = get_user_email(row["Name"])
 
-               c.execute("""
-SELECT *
-FROM requests
-WHERE sender_email = ?
-AND receiver_email = ?
-AND status = 'Pending'
-""",
-(
-    st.session_state.email,
-    receiver_email
-))
+        c.execute("""
+        SELECT *
+        FROM requests
+        WHERE sender_email = ?
+        AND receiver_email = ?
+        AND status = 'Pending'
+        """,
+        (
+            st.session_state.email,
+            receiver_email
+        ))
 
-existing = c.fetchone()
+        existing = c.fetchone()
 
-if existing:
-    st.warning("Request already sent!")  
-else:
-    c.execute("""
-    INSERT INTO requests
-    (sender_email, receiver_email)
-    VALUES (?, ?)
-    """,
-    (
-        st.session_state.email,
-        receiver_email
-    ))        
-                 
+        if existing:
+            st.warning("Request already sent!")
+        else:
+            c.execute("""
+            INSERT INTO requests
+            (sender_email, receiver_email)
+            VALUES (?, ?)
+            """,
+            (
+                st.session_state.email,
+                receiver_email
+            ))
 
-    conn.commit()
-    st.success("Connection request sent!")
+            conn.commit()
+            st.success("Connection request sent!")
+        
 
     st.divider()
 
