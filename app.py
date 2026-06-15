@@ -328,7 +328,7 @@ else:
                receiver_email = get_user_email(row["Name"])
 
                c.execute("""
-               SELECT *
+SELECT *
 FROM requests
 WHERE sender_email = ?
 AND receiver_email = ?
@@ -356,7 +356,6 @@ else:
                  
 
     conn.commit()
-
     st.success("Connection request sent!")
 
     st.divider()
