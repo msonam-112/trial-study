@@ -306,19 +306,12 @@ else:
               with st.container(border=True):
                score_percent = min(row["Match Score"] * 50, 100)
 
-               st.markdown(f"""
-              ### 👤 {row['Name']}
-
-              📚 Subject: {row['Subject']}
-
-              📝 Exam: {row['Exam']}
-
-              ⏰ Study Time: {row['Study Time']}
-
-              💻 Mode: {row['Mode']}
-
-              ⭐ Match Score: {score_percent:.0f}%
-    """)
+               st.write(f"👤 Name: {row['Name']}")
+               st.write(f"📚 Subject: {row['Subject']}")
+               st.write(f"📄 Exam: {row['Exam']}")
+               st.write(f"⏰ Study Time: {row['Study Time']}")
+               st.write(f"💻 Mode: {row['Mode']}")
+               st.write(f"⭐ Match Score: {score_percent:.0f}%")
 
               st.progress(score_percent / 100)
               st.write("DEBUG:", row["Name"])
