@@ -287,8 +287,8 @@ else:
 
     st.success(f"Logged in as {st.session_state.email}")
 
-    tab1, tab2, tab3 = st.tabs(
-        ["Find Study Buddies", "Student Directory","Requests"]
+    tab1, tab2, tab3, tab4 = st.tabs(
+        ["Find Study Buddies", "Student Directory","Requests","Premium"]
     )
 
     with tab1:
@@ -448,3 +448,20 @@ if st.button("Logout"):
           st.session_state.logged_in = False
           st.session_state.email = ""
           st.rerun()
+
+with tab4:
+    st.header("⭐ Study Buddy Premium")
+
+    st.markdown("""
+    ### Premium Features
+
+    ✅ Unlimited connection requests
+    ✅ Advanced matching algorithm
+    ✅ Priority profile visibility
+    ✅ Premium study groups
+
+    💰 ₹149/month
+    """)
+
+    if st.button("Upgrade to Premium"):
+        st.success("Payment integration coming soon!")
