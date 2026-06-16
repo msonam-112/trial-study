@@ -445,21 +445,21 @@ else:
      st.write("No requests yet.")
 
      with tab4:
-    st.header("⭐ Study Buddy Premium")
+      st.header("⭐ Study Buddy Premium")
 
-    st.markdown("""
-    ### Premium Features
+     st.markdown("""
+        ### Premium Features
 
-    ✅ Unlimited connection requests
-    ✅ Advanced matching algorithm
-    ✅ Priority profile visibility
-    ✅ Premium study groups
+        ✅ Unlimited connection requests
+        ✅ Advanced matching algorithm
+        ✅ Priority profile visibility
+        ✅ Premium study groups
 
-    💰 ₹149/month
-    """)
+        💰 ₹149/month
+        """)
 
     if st.button("Upgrade to Premium"):
-        st.success("Payment integration coming soon!")
+            st.success("Payment integration coming soon!")
 
 if st.button("Logout"):
           st.session_state.logged_in = False
