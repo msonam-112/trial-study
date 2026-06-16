@@ -444,12 +444,7 @@ else:
     else:
      st.write("No requests yet.")
 
-if st.button("Logout"):
-          st.session_state.logged_in = False
-          st.session_state.email = ""
-          st.rerun()
-
-with tab4:
+     with tab4:
     st.header("⭐ Study Buddy Premium")
 
     st.markdown("""
@@ -465,3 +460,8 @@ with tab4:
 
     if st.button("Upgrade to Premium"):
         st.success("Payment integration coming soon!")
+
+if st.button("Logout"):
+          st.session_state.logged_in = False
+          st.session_state.email = ""
+          st.rerun()
