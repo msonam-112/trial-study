@@ -441,8 +441,8 @@ else:
                     "Rejected"
                 )
                 st.warning("Request rejected!")
-    else:
-     st.write("No requests yet.")
+     else:
+      st.write("No requests yet.")
 
      with tab4:
       st.header("⭐ Study Buddy Premium")
